@@ -1,73 +1,137 @@
-<div style="
-  text-align: center; 
-  background: url('https://raw.githubusercontent.com/photostic-source/images/main/4K%20GIF%20by%20Xbox.gif
-') no-repeat center center/cover; 
-  height: 100vh; 
-  display: flex; 
-  flex-direction: column; 
-  justify-content: center; 
-  align-items: center;
-  position: relative;
-  color: white;
-">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Web Page</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  <!-- Animated Button -->
-  <button id="startButton" style="
-    width: 100px; 
-    height: 100px; 
-    background: #ff6600; 
-    color: white; 
-    border: none; 
-    border-radius: 50%; 
-    font-size: 14px; 
-    cursor: pointer; 
-    animation: pulse 1.5s infinite; 
-    transition: transform 0.3s ease;">
-    Click to Begin
-  </button>
-  
-  <p id="scrollText" style="display: none; margin-top: 20px;">Scroll to Continue</p>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 1); /* 40% transparency */
+      overflow: hidden;
+      flex-direction: column;
+      position: relative;
+    }
 
-  <!-- Hidden YouTube Music Player -->
-  <iframe id="musicPlayer" width="0" height="0" style="border: none; display: none;" 
-    src="https://www.youtube.com/embed/YOUR_YOUTUBE_VIDEO_ID?autoplay=1&loop=1&playlist=YOUR_YOUTUBE_VIDEO_ID">
-  </iframe>
+    .background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://raw.githubusercontent.com/photostic-source/images/main/Driving%20Fast%20Road%20Trip%20GIF%20by%20xponentialdesign.gif') no-repeat center center/cover;
+      opacity: 0.1;
+      transition: opacity 15s ease;
+    }
 
-</div>
+    .container {
+      text-align: center;
+      z-index: 1;
+    }
 
-<style>
-  @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
-  }
-</style>
+    /* Button styles */
+    .start-button {
+      width: 10vw;
+      height: 10vw;
+      max-width: 120px;
+      max-height: 120px;
+      background: #e8251f;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 2vw;
+      cursor: pointer;
+      animation: pulse 2.5s infinite;
+      transition: transform 0.8s ease;
+    }
 
-<script>
-  let button = document.getElementById("startButton");
-  let scrollText = document.getElementById("scrollText");
-  let musicPlayer = document.getElementById("musicPlayer");
+    .start-button:hover {
+      transform: scale(1.5);
+    }
 
-  button.addEventListener("click", function() {
-    button.style.display = "none";  // Hide button
-    musicPlayer.style.display = "block";  // Show music player to start music
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
 
-    // Show "Scroll to Continue" after 10 sec
-    setTimeout(() => {
-      scrollText.style.display = "block";
-    }, 10000);
+    /* Scroll text */
+    #scrollText {
+      display: none;
+      margin-top: 2vh;
+      font-size: 1.5vw;
+      color: white;
+    }
 
-    // Redirect after 30 sec if user doesn't scroll
-    setTimeout(() => {
-      if (!window.scrolled) {
+    #scrollText a {
+      color: #a0a0a0;
+      text-decoration: none;
+      font-weight: regular;
+    }
+
+    #scrollText a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="background"></div>
+
+  <div class="container">
+    <button id="startButton" class="start-button">Click to Begin</button>
+    <p id="scrollText"><a href="https://your-redirect-link.com">Continue</a></p>
+  </div>
+
+  <!-- Audio Player -->
+  <audio id="backgroundMusic" preload="auto">
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    let button = document.getElementById("startButton");
+    let scrollText = document.getElementById("scrollText");
+    let audio = document.getElementById("backgroundMusic");
+    let hasScrolled = false;
+    let background = document.querySelector(".background");
+
+    button.addEventListener("click", function() {
+      button.style.display = "none";  // Hide button
+      audio.play().catch(error => console.log("Autoplay blocked:", error));  // Try playing music
+
+      // Fade in the background
+      background.style.opacity = 1;
+
+      // Show "Scroll to Continue" after 10 sec
+      setTimeout(() => {
+        scrollText.style.display = "block";
+      }, 10000);
+
+      // Redirect after 60 sec if user doesn’t scroll
+      setTimeout(() => {
+        if (!hasScrolled) {
+          window.location.href = "https://your-redirect-link.com";
+        }
+      }, 60000);
+    });
+
+    // Detect scroll for instant redirect
+    window.addEventListener("scroll", function() {
+      if (!hasScrolled) {
+        hasScrolled = true;
         window.location.href = "https://your-redirect-link.com";
       }
-    }, 30000);
-  });
+    });
+  </script>
 
-  // Detect scroll for instant redirect
-  window.addEventListener("scroll", function() {
-    window.scrolled = true;
-    window.location.href = "https://your-redirect-link.com";
-  });
-</script>
+</body>
+</html>
